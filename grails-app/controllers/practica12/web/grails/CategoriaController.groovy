@@ -92,14 +92,26 @@ class CategoriaController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'categoria.label', default: 'Categoria'), categoria.id])
-                redirect categoria
+                redirect action: "index"
             }
             '*' { respond categoria, [status: CREATED] }
         }
     }
 
     def edit(Long id) {
-        respond categoriaService.get(id)
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+        respond categoriaService.get(id),model: ['user':userLogged]
     }
 
     def update(Categoria categoria) {
@@ -107,6 +119,11 @@ class CategoriaController {
             notFound()
             return
         }
+
+        categoria.usuario = User.findById( (long) springSecurityService.principal.id)
+
+        categoria.fecha = new Date()
+        categoria.status = "editada - "+ new Date().toString()
 
         try {
             categoriaService.save(categoria)

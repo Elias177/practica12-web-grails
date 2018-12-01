@@ -31,8 +31,14 @@
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
         <li class=""><a title="" href="#"><i class="icon icon-user-md"></i> <span class="text">Welcome ${user.username}</span></a></li>
-        <li class=""><a title="" href="${createLink(controller:'login', action:'logout')}"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
-    </ul>
+        <li class="">
+            <form name="submitForm" class="form-inline" method="POST" action="${createLink(controller: 'logout')}">
+                <input type="hidden" name="" value="">
+            </form>
+            <a title="" HREF="javascript:document.submitForm.submit()"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a>
+
+
+        </li>    </ul>
 </div>
 <!--close-top-Header-menu-->
 
@@ -40,12 +46,12 @@
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
     <ul>
         <li><a href="${createLink(controller:'dashboard', action:'index')}"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-        <li> <a  href="${createLink(controller:'contacto', action:'index')}"><i class="icon icon-envelope"></i> <span>Contactos</span></a> </li>
-        <li> <a href="${createLink(controller:'departamento', action:'index')}"><i class="icon icon-building"></i> <span>Departamentos</span></a> </li>
-        <li class="active"> <a href="${createLink(controller:'categoria', action:'index')}"><i class="icon icon-list"></i> <span>Categorias</span></a> </li>
+        <li> <a  href="${createLink(controller:'contacto', action:'index')}"><i class="icon icon-envelope"></i> <span><g:message code="contacto.label" />s</span></a> </li>
+        <li> <a href="${createLink(controller:'departamento', action:'index')}"><i class="icon icon-building"></i> <span><g:message code="departamento.label" />s</span></a> </li>
+        <li class="active"> <a href="${createLink(controller:'categoria', action:'index')}"><i class="icon icon-list"></i> <span><g:message code="categorias.label" /></span></a> </li>
 
         <g:if test="${user.admin}">
-            <li> <a href="${createLink(controller:'user', action:'index')}"><i class="icon icon-user"></i> <span>Usuarios</span></a> </li>
+            <li> <a href="${createLink(controller:'user', action:'index')}"><i class="icon icon-user"></i> <span><g:message code="user.label" />s</span></a> </li>
         </g:if>
     </ul>
 </div>
@@ -59,7 +65,7 @@
 
     <div class="row-fluid">
 
-        <div class="span6">
+        <div class="span12">
             <div class="widget-box">
                 <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                     <h5><g:message code="default.create.label" args="[entityName]" /></h5>
@@ -74,19 +80,19 @@
                         </g:eachError>
                     </ul>
                 </g:hasErrors>
-                <div class="widget-content nopadding">
+                <div id="tabl" class="widget-content nopadding">
                     <g:form resource="${this.categoria}" method="POST" class="form-horizontal">
                         <div class="control-group">
-                            <label class="control-label">Nombre :</label>
+                            <label class="control-label"><g:message code="nombre.label" /> :</label>
                             <div class="controls">
-                                <g:textField name="nombre" type="text" class="span11"  placeholder="First name"/>
+                                <g:textField name="nombre" type="text" class="span11" required="required"/>
                             </div>
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label">Descripcion :</label>
+                            <label class="control-label"><g:message code="descripcion.label" /> :</label>
                             <div class="controls">
-                                <g:textArea name="descripcion" class="span11"/><br/>
+                                <g:textArea name="descripcion" class="span11" required="required"/><br/>
                             </div>
                         </div>
                         <div class="form-actions">
@@ -103,16 +109,17 @@
 
 
 
-</div>
-</div>
 
 <!--end-main-container-part-->
 
 <!--Footer-part-->
 
 <div class="row-fluid">
-    <div id="footer" class="span12"> 2013 &copy; Matrix Admin. Brought to you by <a href="http://themedesigner.in">Themedesigner.in</a> </div>
+    <div id="footer" class="span12"> 2018 &copy; Combine Group </div>
 </div>
+
+
+
 
 <!--end-Footer-part-->
 <asset:javascript src="matrix.dashboard.js"/>

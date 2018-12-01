@@ -1,4 +1,155 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Black Mesa Admin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <g:set var="entityName" value="${message(code: 'categoria.label', default: 'Categoria')}" />
+    <asset:stylesheet href="bootstrap.min.css"/>
+    <asset:stylesheet href="bootstrap-responsive.min.css"/>
+    <asset:stylesheet href="fullcalendar.css"/>
+    <asset:stylesheet href="matrix-style.css"/>
+    <asset:stylesheet href="matrix-media.css"/>
+    <asset:stylesheet href="css/font-awesome.css"/>
+    <asset:stylesheet href="jquery.gritter.css"/>
+    <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+<!--Header-part-->
+<div id="header" style="height: 40px">
+    <asset:image src="logo2.png"/>
+    <h1><a href="${createLink(controller:'dashboard', action:'index')}">">Home</a></h1>
+</div>
+<!--close-Header-part-->
+
+
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+    <ul class="nav">
+        <li class=""><a title="" href="#"><i class="icon icon-user-md"></i> <span class="text">Welcome ${user.username}</span></a></li>
+        <li class="">
+            <form name="submitForm" class="form-inline" method="POST" action="${createLink(controller: 'logout')}">
+                <input type="hidden" name="" value="">
+            </form>
+            <a title="" HREF="javascript:document.submitForm.submit()"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a>
+
+
+        </li>    </ul>
+</div>
+<!--close-top-Header-menu-->
+
+<!--sidebar-menu-->
+<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
+    <ul>
+        <li><a href="${createLink(controller:'dashboard', action:'index')}"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+        <li> <a  href="${createLink(controller:'contacto', action:'index')}"><i class="icon icon-envelope"></i> <span><g:message code="contacto.label" />s</span></a> </li>
+        <li> <a href="${createLink(controller:'departamento', action:'index')}"><i class="icon icon-building"></i> <span><g:message code="departamento.label" />s</span></a> </li>
+        <li class="active"> <a href="${createLink(controller:'categoria', action:'index')}"><i class="icon icon-list"></i> <span><g:message code="categorias.label" /></span></a> </li>
+
+        <g:if test="${user.admin}">
+            <li> <a href="${createLink(controller:'user', action:'index')}"><i class="icon icon-user"></i> <span><g:message code="user.label" />s</span></a> </li>
+        </g:if>
+    </ul>
+</div>
+<!--sidebar-menu-->
+
+<!--main-container-part-->
+<!--End-breadcrumbs-->
+<div id="content" class="container-fluid">
+
+
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+            <g:hasErrors bean="${this.categoria}">
+                <ul class="errors" role="alert">
+                    <g:eachError bean="${this.categoria}" var="error">
+                        <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+                    </g:eachError>
+                </ul>
+            </g:hasErrors>
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                    <h5><g:message code="default.edit.label" args="[entityName]" /></h5>
+                </div>
+
+                <div id="tabl" class="widget-content nopadding">
+
+                    <g:form resource="${this.categoria}" method="PUT" class="form-horizontal">
+                        <g:hiddenField name="version" value="${this.categoria?.version}" />
+                        <div class="control-group">
+                            <label class="control-label">Nombre :</label>
+                            <div class="controls">
+                                <g:textField name="nombre" type="text" class="span11" value="${this.categoria?.nombre}" placeholder="Nombre" required="required"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Descripcion :</label>
+                            <div class="controls">
+                                <g:textArea name="descripcion" class="span11" value="${this.categoria?.descripcion}" required="required"/><br/>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <input class="save btn btn-success" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+                        </div>
+                    </g:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<!--end-main-container-part-->
+
+<!--Footer-part-->
+
+<div class="row-fluid">
+    <div id="footer" class="span12"> 2018 &copy; Combine Group </div>
+</div>
+
+
+
+<!--end-Footer-part-->
+<asset:javascript src="matrix.dashboard.js"/>
+<asset:javascript src="jquery.min.js"/>
+<asset:javascript src="jquery.ui.custom.js"/>
+<asset:javascript src="bootstrap.min.js"/>
+<asset:javascript src="jquery.flot.min.js"/>
+<asset:javascript src="jquery.flot.resize.min.js"/>
+<asset:javascript src="jquery.peity.min.js"/>
+<asset:javascript src="fullcalendar.min.js"/>
+<asset:javascript src="matrix.js"/>
+<asset:javascript src="matrix.chat.js"/>
+<asset:javascript src="matrix.interface.js"/>
+<asset:javascript src="jquery.validate.js"/>
+<asset:javascript src="matrix.form_validation.js"/>
+<asset:javascript src="jquery.wizard.js"/>
+<asset:javascript src="jquery.uniform.js"/>
+<asset:javascript src="select2.min.js"/>
+<asset:javascript src="matrix.popover.js"/>
+
+
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main" />
@@ -14,27 +165,6 @@
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
             </ul>
         </div>
-        <div id="edit-categoria" class="content scaffold-edit" role="main">
-            <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
-            <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
-            </g:if>
-            <g:hasErrors bean="${this.categoria}">
-            <ul class="errors" role="alert">
-                <g:eachError bean="${this.categoria}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-                </g:eachError>
-            </ul>
-            </g:hasErrors>
-            <g:form resource="${this.categoria}" method="PUT">
-                <g:hiddenField name="version" value="${this.categoria?.version}" />
-                <fieldset class="form">
-                    <f:all bean="categoria"/>
-                </fieldset>
-                <fieldset class="buttons">
-                    <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
-                </fieldset>
-            </g:form>
-        </div>
+
     </body>
 </html>

@@ -10,5 +10,7 @@ class Categoria {
 
     static constraints = {
         usuario nullable: true
+        nombre blank: false
+        descripcion blank: false
     }
 }

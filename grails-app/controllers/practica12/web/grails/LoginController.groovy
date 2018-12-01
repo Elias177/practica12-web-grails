@@ -2,6 +2,9 @@ package practica12.web.grails
 
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
+import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.annotation.Secured
+
 
 class LoginController extends grails.plugin.springsecurity.LoginController  {
 

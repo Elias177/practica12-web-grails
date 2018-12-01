@@ -5,7 +5,7 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import java.security.Principal
 
-@Secured(['ROLE_ADMIN','ROLE_USER'])
+@Secured(["ROLE_ADMIN","ROLE_USER"])
 class DashboardController {
 
     SpringSecurityService springSecurityService

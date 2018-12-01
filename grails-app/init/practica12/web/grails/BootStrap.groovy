@@ -16,7 +16,7 @@ class BootStrap {
 
             def r = new UserRole(user: testUser,role: adminRole).save(failOnError: true)
 
-            def r2 = new UserRole(user: userNormal,role: normalRole.save(failOnError: true))
+            def r2 = new UserRole(user: userNormal,role: normalRole).save(failOnError: true)
 
 
         }

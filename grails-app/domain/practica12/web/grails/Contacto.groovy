@@ -16,8 +16,13 @@ class Contacto {
     static belongsTo = Departamento
 
     static constraints = {
-        email unique: true
-        telefono unique: true
-        usuario nullable: true
+        email unique: true, email: true, blank: false
+        telefono unique: true, blank: false
+        usuario nullable: true, blank: false
+        nombre blank: false
+        apellido blank: false
+        direccion blank: false
+        puesto blank: false
+        telefono blank: false
     }
 }

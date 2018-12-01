@@ -11,5 +11,8 @@ class Departamento {
 
     static constraints = {
        usuario nullable: true
+        nombre blank: false
+        descripcion blank: false
+
     }
 }
