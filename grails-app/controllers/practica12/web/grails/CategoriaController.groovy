@@ -76,16 +76,28 @@ class CategoriaController {
             notFound()
             return
         }
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
         categoria.usuario = User.findById( (long) springSecurityService.principal.id)
 
             categoria.fecha = new Date()
-            categoria.status = "creada - "+ new Date().toString()
+            categoria.status = message(code: "creada.label")+" - "+ new Date().toString()
 
 
         try {
             categoriaService.save(categoria)
         } catch (ValidationException e) {
-            respond categoria.errors, view:'create'
+            respond categoria.errors, view:'create', model: ['user': userLogged]
             return
         }
 

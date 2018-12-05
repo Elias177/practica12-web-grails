@@ -9,8 +9,8 @@ import static org.springframework.http.HttpStatus.*
 class ContactoController {
 
     ContactoService contactoService
-
-
+    CategoriaService categoriaService
+    DepartamentoService departamentoService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -57,7 +57,21 @@ class ContactoController {
     }
 
     def create() {
-        respond new Contacto(params)
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+
+
+        respond new Contacto(params),model: ['user': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
     }
 
     def save(Contacto contacto) {
@@ -65,18 +79,35 @@ class ContactoController {
             notFound()
             return
         }
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+        contacto.usuario = User.findById( (long) springSecurityService.principal.id)
+
+        contacto.fecha = new Date()
+        contacto.status = message(code: "creada.label")+" - "+ new Date().toString()
+
+
 
         try {
             contactoService.save(contacto)
         } catch (ValidationException e) {
-            respond contacto.errors, view:'create'
+            respond contacto.errors, view:'create', model: ['user': userLogged]
             return
         }
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'contacto.label', default: 'Contacto'), contacto.id])
-                redirect contacto
+                redirect action: "index"
             }
             '*' { respond contacto, [status: CREATED] }
         }
