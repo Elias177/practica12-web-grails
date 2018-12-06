@@ -16,6 +16,7 @@ class User implements Serializable {
     User usuario
     Date fecha
     String status
+    static hasMany = [deps: Departamento]
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked

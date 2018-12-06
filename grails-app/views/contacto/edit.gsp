@@ -4,7 +4,7 @@
     <title>Black Mesa Admin</title>
     <meta charset="UTF-8" />
     <meta name="layout" content="main" />
-    <g:set var="entityName" value="${message(code: 'contacto.label', default: 'Categoria')}" />
+    <g:set var="entityName" value="${message(code: 'contacto.label', default: 'Contacto')}" />
 
 </head>
 <body>

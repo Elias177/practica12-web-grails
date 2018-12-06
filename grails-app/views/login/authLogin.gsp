@@ -19,13 +19,13 @@
 </head>
 <body>
 
-    <g:if test='${flash.message}'>
-        <div class="login_message">${flash.message}</div>
-    </g:if>
 
     <div id="loginbox">
         <form action="${postUrl ?: '/login/authenticate'}" method="POST" id="loginForm" class="cssform" autocomplete="off">
             <div class="control-group normal_text"> <h3> <asset:image src="logo3.png" width="100" height="200"/> </h3></div>
+            <g:if test='${flash.message}'>
+                <div class="alert alert-danger alert-block login_message">${flash.message}</div>
+            </g:if>
             <div class="control-group">
                 <div class="controls">
                     <div class="main_input_box">

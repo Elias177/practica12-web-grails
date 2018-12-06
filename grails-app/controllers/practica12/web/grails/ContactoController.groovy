@@ -49,7 +49,7 @@ class ContactoController {
             userLogged.setAdmin(false)
         }
         params.max = Math.min(max ?: 10, 100)
-        respond contactoService.list(params), model:[contactoCount: contactoService.count(),'user': userLogged]
+        respond contactoService.list(params), model:[contactoCount: contactoService.count(),'userLog': userLogged]
     }
 
     def show(Long id) {
@@ -66,7 +66,7 @@ class ContactoController {
         }
 
 
-        respond contactoService.get(id),model: ['user': userLogged]
+        respond contactoService.get(id),model: ['userLog': userLogged]
     }
 
     def create() {
@@ -84,7 +84,7 @@ class ContactoController {
 
 
 
-        respond new Contacto(params),model: ['user': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
+        respond new Contacto(params),model: ['userLog': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
     }
 
     def save(Contacto contacto) {
@@ -113,7 +113,7 @@ class ContactoController {
         try {
             contactoService.save(contacto)
         } catch (ValidationException e) {
-            respond contacto.errors, view:'create', model: ['user': userLogged]
+            respond contacto.errors, view:'create', model: ['userLog': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
             return
         }
 
@@ -146,7 +146,7 @@ class ContactoController {
             userLogged.setAdmin(false)
         }
 
-        respond contactoService.get(id), model: ['user': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
+        respond contactoService.get(id), model: ['userLog': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
     }
 
     def update(Contacto contacto) {
@@ -188,7 +188,7 @@ class ContactoController {
         try {
             contactoService.save(contacto)
         } catch (ValidationException e) {
-            respond contacto.errors, view:'edit', model: ['user':userLogged]
+            respond contacto.errors, view:'edit', model: ['userLog':userLogged]
             return
         }
 

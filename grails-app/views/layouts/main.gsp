@@ -12,6 +12,7 @@
     <asset:stylesheet href="css/font-awesome.css"/>
     <asset:stylesheet href="jquery.gritter.css"/>
     <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     <style>
         .gradeXX{
@@ -35,11 +36,20 @@
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
-        <li class=""><a title="" href="#"><i class="icon icon-user-md"></i> <span class="text">Welcome</span></a></li>
+        <form name="submitForm" class="form-inline" method="POST" action="${createLink(controller: 'logout')}">
+            <input type="hidden" name="" value="">
+        </form>
+        <li class="dropdown" id="profile-messages"><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome ${userLog.username}</span><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="/?lang=es"><i class="icon-flag"></i>Spanish</a></li>
+                <li class="divider"></li>
+                <li><a href="/?lang=en"><i class="icon-flag"></i>English</a></li>
+                <li class="divider"></li>
+                <li><a title="" HREF="javascript:document.submitForm.submit()"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+            </ul>
+        </li>
         <li class="">
-            <form name="submitForm" class="form-inline" method="POST" action="${createLink(controller: 'logout')}">
-                <input type="hidden" name="" value="">
-            </form>
+
             <a title="" HREF="javascript:document.submitForm.submit()"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a>
 
 
@@ -55,7 +65,10 @@
         <li> <a  href="${createLink(controller:'contacto', action:'index')}"><i class="icon icon-envelope"></i> <span><g:message code="contacto.label" />s</span></a> </li>
         <li> <a href="${createLink(controller:'departamento', action:'index')}"><i class="icon icon-building"></i> <span><g:message code="departamento.label" />s</span></a> </li>
         <li > <a href="${createLink(controller:'categoria', action:'index')}"><i class="icon icon-list"></i> <span><g:message code="categorias.label" /></span></a> </li>
+        <g:if test="${userLog.admin}">
+            <li > <a href="${createLink(controller:'user', action:'index')}"><i class="icon icon-user"></i> <span><g:message code="user.label" />s</span></a> </li>
 
+        </g:if>
     </ul>
 </div>
 
@@ -86,6 +99,7 @@
 <asset:javascript src="jquery.uniform.js"/>
 <asset:javascript src="select2.min.js"/>
 <asset:javascript src="matrix.popover.js"/>
+
 
 </body>
 </html>

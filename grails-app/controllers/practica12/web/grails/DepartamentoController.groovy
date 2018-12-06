@@ -42,13 +42,23 @@ class DepartamentoController {
         userLogged.setUsername(springSecurityService.principal.username)
 
         def userAuth = springSecurityService.principal.authorities
+
         if(userAuth.toString() == "[ROLE_ADMIN]"){
             userLogged.setAdmin(true)
         }else{
             userLogged.setAdmin(false)
         }
+        println(userLogged.getAdmin())
         params.max = Math.min(max ?: 10, 100)
-        respond departamentoService.list(params), model:[departamentoCount: departamentoService.count(), 'user': userLogged]
+
+        println(User.findById(springSecurityService.principal.id).deps.size())
+
+        if(!userLogged.getAdmin()){
+            respond User.findById(springSecurityService.principal.id).deps.toList(), model:[departamentoCount: departamentoService.count(), 'userLog': userLogged]
+            return
+        }
+
+        respond departamentoService.list(params), model:[departamentoCount: departamentoService.count(), 'userLog': userLogged]
     }
 
     def show(Long id) {
@@ -62,7 +72,7 @@ class DepartamentoController {
         }else{
             userLogged.setAdmin(false)
         }
-        respond departamentoService.get(id), model: ['user': userLogged]
+        respond departamentoService.get(id), model: ['userLog': userLogged]
     }
 
     def create() {
@@ -78,7 +88,7 @@ class DepartamentoController {
             userLogged.setAdmin(false)
         }
 
-        respond new Departamento(params),model: ['user': userLogged]
+        respond new Departamento(params),model: ['userLog': userLogged]
     }
 
     def save(Departamento departamento) {
@@ -109,7 +119,7 @@ class DepartamentoController {
         try {
             departamentoService.save(departamento)
         } catch (ValidationException e) {
-            respond departamento.errors, view:'create', model: ['user': userLogged]
+            respond departamento.errors, view:'create', model: ['userLog': userLogged]
             return
         }
 
@@ -136,7 +146,7 @@ class DepartamentoController {
             userLogged.setAdmin(false)
         }
 
-        respond departamentoService.get(id), model: ['user': userLogged, 'contactoList': contactoService.list()]
+        respond departamentoService.get(id), model: ['userLog': userLogged, 'contactoList': contactoService.list()]
     }
 
     def update(Departamento departamento) {

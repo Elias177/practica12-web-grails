@@ -1,94 +1,82 @@
+<%@ page import="practica12.web.grails.Departamento" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Black Mesa Admin</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <asset:stylesheet href="bootstrap.min.css"/>
-    <asset:stylesheet href="bootstrap-responsive.min.css"/>
-    <asset:stylesheet href="fullcalendar.css"/>
-    <asset:stylesheet href="matrix-style.css"/>
-    <asset:stylesheet href="matrix-media.css"/>
-    <asset:stylesheet href="css/font-awesome.css"/>
-    <asset:stylesheet href="jquery.gritter.css"/>
-    <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <meta name="layout" content="main" />
 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-<!--Header-part-->
-<div id="header" style="height: 40px">
-    <asset:image src="logo2.png"/>
-    <h1><a href="${createLink(controller:'dashboard', action:'index')}">">Home</a></h1>
-</div>
-<!--close-Header-part-->
+    <div id="content" class="container-fluid">
+
+            <div class="row-fluid">
+
+                <div class="span6">
+                    <div class="widget-box">
+                        <div class="widget-title">
+                            <span class="icon"> <i class="icon-bar-chart"></i> </span>
+                            <h5><g:message code="grafica.label"/></h5>
+                        </div>
+                        <div class="widget-content">
+                            <%
+                                def columns = [['string', message(code:'departamento.label')], ['number', message(code:'contacto.label')+'s']]
+
+                                def cata = []
+                                for (int i = 0; i < departamentoList.size() ; i++) {
+                                    def thing = [departamentoList.get(i).nombre, departamentoList.get(i).conts.size()]
+                                    cata.add(thing)
+
+                                }
 
 
-<!--top-Header-menu-->
-<div id="user-nav" class="navbar navbar-inverse">
+                            %>
 
-    <ul class="nav">
-        <li class=""><a title="" href="#"><i class="icon icon-user-md"></i> <span class="text">Welcome ${user.username}</span></a></li>
-        <li class="">
-            <form name="submitForm" class="form-inline" method="POST" action="${createLink(controller: 'logout')}">
-                <input type="hidden" name="" value="">
-            </form>
-            <a title="" HREF="javascript:document.submitForm.submit()"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a>
+                            <gvisualization:pieCoreChart elementId="piechart" title="${message(code:'grafica.departamento.label')}" width="${450}" height="${300}"
+                                                         columns="${columns}" data="${cata}" />
 
+                            <div id="piechart"></div>
+                        </div>
+                </div>
+                </div>
 
-        </li>    </ul>
-</div>
-<!--close-top-Header-menu-->
+                <div class="span6">
+                    <div class="widget-box">
+                        <div class="widget-title">
+                            <span class="icon"> <i class="icon-bar-chart"></i> </span>
+                            <h5><g:message code="grafica.label"/></h5>
+                        </div>
+                        <div class="widget-content">
+                            <%
 
-<!--sidebar-menu-->
-<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
-    <ul>
-        <li class="active"><a href="${createLink(controller:'dashboard', action:'index')}"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-        <li> <a  href="${createLink(controller:'contacto', action:'index')}"><i class="icon icon-envelope"></i> <span><g:message code="contacto.label" />s</span></a> </li>
-        <li> <a href="${createLink(controller:'departamento', action:'index')}"><i class="icon icon-building"></i> <span><g:message code="departamento.label" />s</span></a> </li>
-        <li > <a href="${createLink(controller:'categoria', action:'index')}"><i class="icon icon-list"></i> <span><g:message code="categorias.label" /></span></a> </li>
+                                def columns2 = [['string', message(code:'categoria.label')], ['number', message(code:'contacto.label')+'s']]
 
-        <g:if test="${user.admin}">
-            <li> <a href="${createLink(controller:'user', action:'index')}"><i class="icon icon-user"></i> <span><g:message code="user.label" />s</span></a> </li>
-        </g:if>
-    </ul>
-</div>
-<!--sidebar-menu-->
+                                def cata2 = []
 
-<!--main-container-part-->
-<div id="content">
+                                for (int i = 0; i < categoriaList.size() ; i++) {
+                                    def count = 0
+                                    for (int j = 0; j < contactoList.size() ; j++) {
+                                        if(contactoList.get(j).categoria == categoriaList.get(i))
+                                            count++
+                                    }
+                                    def thing = [categoriaList.get(i).nombre, count]
+                                    cata2.add(thing)
 
+                                }
 
-</div>
+                            %>
+                            <gvisualization:pieCoreChart elementId="piechart2" title="${message(code:'grafica.categoria.label')}" width="${450}" height="${300}"
+                                                         columns="${columns2}" data="${cata2}" />
 
-<!--end-main-container-part-->
+                            <div id="piechart2"></div>
+                        </div>
+                    </div>
+                </div>
 
-<!--Footer-part-->
+        </div>
 
-<div class="row-fluid">
-    <div id="footer" class="span12"> 2013 &copy; Matrix Admin. Brought to you by <a href="http://themedesigner.in">Themedesigner.in</a> </div>
-</div>
-
-<!--end-Footer-part-->
-<asset:javascript src="matrix.dashboard.js"/>
-<asset:javascript src="jquery.min.js"/>
-<asset:javascript src="jquery.ui.custom.js"/>
-<asset:javascript src="bootstrap.min.js"/>
-<asset:javascript src="jquery.flot.min.js"/>
-<asset:javascript src="jquery.flot.resize.min.js"/>
-<asset:javascript src="jquery.peity.min.js"/>
-<asset:javascript src="fullcalendar.min.js"/>
-<asset:javascript src="matrix.js"/>
-<asset:javascript src="matrix.chat.js"/>
-<asset:javascript src="matrix.interface.js"/>
-<asset:javascript src="jquery.validate.js"/>
-<asset:javascript src="matrix.form_validation.js"/>
-<asset:javascript src="jquery.wizard.js"/>
-<asset:javascript src="jquery.uniform.js"/>
-<asset:javascript src="select2.min.js"/>
-<asset:javascript src="matrix.popover.js"/>
-
+    </div>
 
 </body>
 </html>

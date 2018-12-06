@@ -49,7 +49,7 @@ class CategoriaController {
         }
 
         params.max = Math.min(max ?: 10, 100)
-        respond categoriaService.list(params), model:[categoriaCount: categoriaService.count(), 'user':userLogged]
+        respond categoriaService.list(params), model:[categoriaCount: categoriaService.count(), 'userLog':userLogged]
     }
 
     def show(Long id) {
@@ -68,7 +68,7 @@ class CategoriaController {
         }else{
             userLogged.setAdmin(false)
         }
-        respond new Categoria(params) , model: ['user':userLogged]
+        respond new Categoria(params) , model: ['userLog':userLogged]
     }
 
     def save(Categoria categoria) {
@@ -97,7 +97,7 @@ class CategoriaController {
         try {
             categoriaService.save(categoria)
         } catch (ValidationException e) {
-            respond categoria.errors, view:'create', model: ['user': userLogged]
+            respond categoria.errors, view:'create', model: ['userLog': userLogged]
             return
         }
 
@@ -123,7 +123,7 @@ class CategoriaController {
             userLogged.setAdmin(false)
         }
 
-        respond categoriaService.get(id),model: ['user':userLogged]
+        respond categoriaService.get(id),model: ['userLog':userLogged]
     }
 
     def update(Categoria categoria) {

@@ -10,6 +10,32 @@ class DashboardController {
 
     SpringSecurityService springSecurityService
 
+    ContactoService contactoService
+    CategoriaService categoriaService
+    DepartamentoService departamentoService
+
+    class dataPoint{
+
+        float y;
+        String label;
+
+        float getY() {
+            return y
+        }
+
+        void setY(float y) {
+            this.y = y
+        }
+
+        String getLabel() {
+            return label
+        }
+
+        void setLabel(String label) {
+            this.label = label
+        }
+    }
+
     def index() {
 
         def userLogged = new LoggedUser()
@@ -23,7 +49,7 @@ class DashboardController {
             userLogged.setAdmin(false)
         }
 
-        render(view: "/index",model: ['user':userLogged])
+        render(view: "/index",model: ['userLog':userLogged,'categoriaList': categoriaService.list(), 'contactoList': contactoService.list(), 'departamentoList': departamentoService.list()])
     }
 
     class LoggedUser{
