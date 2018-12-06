@@ -11,20 +11,20 @@
         <div class="row-fluid">
 
             <div class="span12">
+                <g:if test="${flash.message}">
+                    <div class="alert alert-info alert-block message" role="status"><a class="close" data-dismiss="alert" href="#">×</a>${flash.message}</div>
+                </g:if>
+                <g:hasErrors bean="${this.contacto}">
+                    <ul class="alert alert-danger alert-block message" role="alert"><a class="close" data-dismiss="alert" href="#">×</a>
+                        <g:eachError bean="${this.contacto}" var="error">
+                            <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+                        </g:eachError>
+                    </ul>
+                </g:hasErrors>
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                         <h5><g:message code="default.create.label" args="[entityName]" /></h5>
                     </div>
-                    <g:if test="${flash.message}">
-                        <div class="message" role="status">${flash.message}</div>
-                    </g:if>
-                    <g:hasErrors bean="${this.departamento}">
-                        <ul class="errors" role="alert">
-                            <g:eachError bean="${this.departamento}" var="error">
-                                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-                            </g:eachError>
-                        </ul>
-                    </g:hasErrors>
                     <div id="tabl" class="widget-content nopadding">
                         <g:form resource="${this.departamento}" method="POST" class="form-horizontal">
                             <div class="control-group">

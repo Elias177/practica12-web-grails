@@ -20,7 +20,7 @@
 
         <div class="span11">
             <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
+                <div class="alert alert-info alert-block message" role="status"><a class="close" data-dismiss="alert" href="#">×</a>${flash.message}</div>
             </g:if>
             <div class="widget-box">
                 <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
@@ -49,9 +49,9 @@
                                 <td>${it.descripcion}</td>
                                 <td>
                                     <ul>
-                                        <g:each in="${it.conts}">
+                                        <g:each var="cont" in="${it.conts}">
 
-                                            <li>${it.nombre}</li>
+                                            <li>${cont.nombre}</li>
 
                                         </g:each>
                                     </ul>

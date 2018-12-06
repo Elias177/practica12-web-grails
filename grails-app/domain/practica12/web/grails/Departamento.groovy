@@ -15,4 +15,5 @@ class Departamento {
         descripcion blank: false
 
     }
+
 }

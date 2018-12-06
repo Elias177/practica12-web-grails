@@ -53,7 +53,20 @@ class ContactoController {
     }
 
     def show(Long id) {
-        respond contactoService.get(id)
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+
+        respond contactoService.get(id),model: ['user': userLogged]
     }
 
     def create() {
@@ -90,12 +103,6 @@ class ContactoController {
             userLogged.setAdmin(false)
         }
 
-
-
-
-
-
-
         contacto.usuario = User.findById( (long) springSecurityService.principal.id)
 
         contacto.fecha = new Date()
@@ -119,7 +126,7 @@ class ContactoController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'contacto.label', default: 'Contacto'), contacto.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'contacto.label', default: 'Contacto'), contacto.nombre])
                 redirect action: "index"
             }
             '*' { respond contacto, [status: CREATED] }
@@ -127,25 +134,75 @@ class ContactoController {
     }
 
     def edit(Long id) {
-        respond contactoService.get(id)
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+        println(userLogged.getUsername())
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+        respond contactoService.get(id), model: ['user': userLogged, 'categoriaList': categoriaService.list(),'departamentoList': departamentoService.list()]
     }
 
     def update(Contacto contacto) {
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
         if (contacto == null) {
             notFound()
             return
         }
 
+
+        contacto.usuario = User.findById( (long) springSecurityService.principal.id)
+
+        contacto.fecha = new Date()
+        contacto.status = message(code: "editada.label")+" - "+ new Date().toString()
+
+        if(contacto.deps.size() != 0){
+            for(Departamento d in departamentoService.list()){
+
+                def book = contacto.deps.find { it.id == d.id }
+
+                if(book != null)
+                contacto.removeFromDeps(book)
+            }
+
+        }
+
+
         try {
             contactoService.save(contacto)
         } catch (ValidationException e) {
-            respond contacto.errors, view:'edit'
+            respond contacto.errors, view:'edit', model: ['user':userLogged]
             return
+        }
+
+        def deps = params.list('departamento')
+
+        for(String d in deps){
+            def departa =  Departamento.findById(Long.parseLong(d))
+            departa.addToConts(contacto).save(flush: true)
+            contacto.addToDeps(departa).save(flush: true)
         }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'contacto.label', default: 'Contacto'), contacto.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'contacto.label', default: 'Contacto'), contacto.nombre])
                 redirect contacto
             }
             '*'{ respond contacto, [status: OK] }

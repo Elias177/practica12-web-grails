@@ -25,4 +25,6 @@ class Contacto  {
         puesto blank: false
         telefono blank: false
     }
+
+
 }

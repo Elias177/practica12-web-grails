@@ -103,7 +103,7 @@ class CategoriaController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'categoria.label', default: 'Categoria'), categoria.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'categoria.label', default: 'Categoria'), categoria.nombre])
                 redirect action: "index"
             }
             '*' { respond categoria, [status: CREATED] }
@@ -135,7 +135,7 @@ class CategoriaController {
         categoria.usuario = User.findById( (long) springSecurityService.principal.id)
 
         categoria.fecha = new Date()
-        categoria.status = "editada - "+ new Date().toString()
+        categoria.status = message(code: "editada.label")+" - "+ new Date().toString()
 
         try {
             categoriaService.save(categoria)
@@ -146,7 +146,7 @@ class CategoriaController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'categoria.label', default: 'Categoria'), categoria.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'categoria.label', default: 'Categoria'), categoria.nombre])
                 redirect categoria
             }
             '*'{ respond categoria, [status: OK] }

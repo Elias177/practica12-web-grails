@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.*
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class DepartamentoController {
 
+    ContactoService contactoService
     DepartamentoService departamentoService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -114,7 +115,7 @@ class DepartamentoController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'departamento.label', default: 'Departamento'), departamento.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'departamento.label', default: 'Departamento'), departamento.nombre])
                 redirect action: 'index'
             }
             '*' { respond departamento, [status: CREATED] }
@@ -122,13 +123,54 @@ class DepartamentoController {
     }
 
     def edit(Long id) {
-        respond departamentoService.get(id)
+
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+        respond departamentoService.get(id), model: ['user': userLogged, 'contactoList': contactoService.list()]
     }
 
     def update(Departamento departamento) {
         if (departamento == null) {
             notFound()
             return
+        }
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+
+        departamento.usuario = User.findById( (long) springSecurityService.principal.id)
+
+        departamento.fecha = new Date()
+        departamento.status = message(code: "editada.label")+" - "+ new Date().toString()
+
+        if(departamento.conts.size() != 0){
+            for(Contacto d in contactoService.list()){
+
+                def book = departamento.conts.find { it.id == d.id }
+
+                if(book != null)
+                    departamento.removeFromConts(book)
+            }
+
         }
 
         try {
@@ -138,9 +180,17 @@ class DepartamentoController {
             return
         }
 
+        def deps = params.list('contacto')
+
+        for(String d in deps){
+            def departa =  Contacto.findById(Long.parseLong(d))
+            departa.addToDeps(departamento).save(flush: true)
+            departamento.addToConts(departa).save(flush: true)
+        }
+
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'departamento.label', default: 'Departamento'), departamento.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'departamento.label', default: 'Departamento'), departamento.nombre])
                 redirect departamento
             }
             '*'{ respond departamento, [status: OK] }

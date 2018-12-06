@@ -28,7 +28,7 @@
 
     <div class="span11">
         <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
+            <div class="alert alert-info alert-block message" role="status"><a class="close" data-dismiss="alert" href="#">×</a>${flash.message}</div>
         </g:if>
         <div class="widget-box">
             <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
@@ -46,10 +46,10 @@
                         <th class="sortable" ><a href="/contacto/index?sort=puesto&amp;max=10&amp;order=asc"><g:message code="puesto.label" /></a></th>
                         <th class="sortable" ><a href="/contacto/index?sort=telefono&amp;max=10&amp;order=asc"><g:message code="telefono.label" /></a></th>
                         <th class="sortable" ><a href="/contacto/index?sort=categoria&amp;max=10&amp;order=asc"><g:message code="categoria.label" /></a></th>
+                        <th><g:message code="departamento.label" />s</th>
                         <th class="sortable" ><a href="/contacto/index?sort=usuario&amp;max=10&amp;order=asc"><g:message code="mod.label" /></a></th>
                         <th class="sortable" ><a href="/contacto/index?sort=fecha&amp;max=10&amp;order=asc"><g:message code="fecha.label" /></a></th>
                         <th class="sortable" ><a href="/contacto/index?sort=status&amp;max=10&amp;order=asc"><g:message code="status.label" /></a></th>
-                        <th><g:message code="departamento.label" />s</th>
                         <th><g:message code="accion.label" /></th>
                     </tr>
                     </thead>
@@ -65,22 +65,21 @@
                             <td>${it.puesto}</td>
                             <td>${it.telefono}</td>
                             <td>${it.categoria.nombre}</td>
+                            <td>
+                                <ul>
+                                    <g:each var="dep" in="${it.deps}">
+
+                                        <li>${dep.nombre}</li>
+
+                                    </g:each>
+                                </ul>
+                            </td>
                             <td><a href="/user/show/${it.usuario.id}">${it.usuario.username}</a></td>
                             <td>${it.fecha}</td>
                             <td>${it.status}</td>
 
                             <td>
-                            <ul>
-                                <g:each in="${it.deps}">
-
-                                    <li>${it.nombre}</li>
-
-                                </g:each>
-                            </ul>
-                            </td>
-
-                            <td>
-                                <g:form action="delete"  method="delete">
+                                <g:form action="delete"   method="delete">
                                     <div class="btn-group">
 
                                         <a role="button" class="btn btn-primary" href="/contacto/edit/${it.id}"><i class="icon-edit"></i></a>
