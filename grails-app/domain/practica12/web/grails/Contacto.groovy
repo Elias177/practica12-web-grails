@@ -1,6 +1,6 @@
 package practica12.web.grails
 
-class Contacto {
+class Contacto  {
 
     String nombre
     String apellido
@@ -12,7 +12,7 @@ class Contacto {
     User usuario
     Date fecha
     String status
-    static hasMany = [departamentos:Departamento]
+    static hasMany = [deps: Departamento]
     static belongsTo = Departamento
 
     static constraints = {

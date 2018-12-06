@@ -7,7 +7,7 @@ class Departamento {
     User usuario
     Date fecha
     String status
-    static hasMany = [contactos:Contacto]
+    static hasMany = [conts: Contacto]
 
     static constraints = {
        usuario nullable: true

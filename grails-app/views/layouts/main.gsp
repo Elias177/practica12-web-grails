@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-</head>
-<body>
-
-
-
-</body>
-</html>
-
-
-
-
-
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
     <title>Black Mesa Admin</title>
     <meta charset="UTF-8" />
@@ -29,8 +13,14 @@
     <asset:stylesheet href="jquery.gritter.css"/>
     <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <style>
+        .gradeXX{
+            cursor: pointer;
+        }
+    </style>
     <g:layoutHead/>
 </head>
+
 <body>
 
 <!--Header-part-->
@@ -65,26 +55,11 @@
         <li> <a  href="${createLink(controller:'contacto', action:'index')}"><i class="icon icon-envelope"></i> <span><g:message code="contacto.label" />s</span></a> </li>
         <li> <a href="${createLink(controller:'departamento', action:'index')}"><i class="icon icon-building"></i> <span><g:message code="departamento.label" />s</span></a> </li>
         <li > <a href="${createLink(controller:'categoria', action:'index')}"><i class="icon icon-list"></i> <span><g:message code="categorias.label" /></span></a> </li>
-
         <g:if test="${user.admin}">
             <li> <a href="${createLink(controller:'user', action:'index')}"><i class="icon icon-user"></i> <span><g:message code="user.label" />s</span></a> </li>
         </g:if>
     </ul>
 </div>
-<!--sidebar-menu-->
-
-<!--main-container-part-->
-<!--End-breadcrumbs-->
-
-
-<!--end-main-container-part-->
-
-<!--Footer-part-->
-
-
-
-
-
 
 
 <g:layoutBody/>

@@ -6,6 +6,7 @@
     <meta name="layout" content="main" />
     <g:set var="entityName" value="${message(code: 'contacto.label', default: 'Contacto')}" />
 
+
 </head>
 <body>
 
@@ -48,13 +49,14 @@
                         <th class="sortable" ><a href="/contacto/index?sort=usuario&amp;max=10&amp;order=asc"><g:message code="mod.label" /></a></th>
                         <th class="sortable" ><a href="/contacto/index?sort=fecha&amp;max=10&amp;order=asc"><g:message code="fecha.label" /></a></th>
                         <th class="sortable" ><a href="/contacto/index?sort=status&amp;max=10&amp;order=asc"><g:message code="status.label" /></a></th>
+                        <th><g:message code="departamento.label" />s</th>
                         <th><g:message code="accion.label" /></th>
                     </tr>
                     </thead>
                     <tbody>
 
                     <g:each in="${contactoList}">
-                        <tr class="gradeX">
+                        <tr class="gradeXX" onclick="getLink(${it.id})">
 
                             <td>${it.nombre}</td>
                             <td>${it.apellido}</td>
@@ -66,6 +68,17 @@
                             <td><a href="/user/show/${it.usuario.id}">${it.usuario.username}</a></td>
                             <td>${it.fecha}</td>
                             <td>${it.status}</td>
+
+                            <td>
+                            <ul>
+                                <g:each in="${it.deps}">
+
+                                    <li>${it.nombre}</li>
+
+                                </g:each>
+                            </ul>
+                            </td>
+
                             <td>
                                 <g:form action="delete"  method="delete">
                                     <div class="btn-group">
@@ -100,7 +113,14 @@
     </div>
 
 
+<script>
 
+    function getLink(e)
+    {
+        window.location.replace('/contacto/show/'+e);
+    }
+
+</script>
 
 <!--end-main-container-part-->
 

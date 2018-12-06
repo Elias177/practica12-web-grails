@@ -79,8 +79,8 @@ class ContactoController {
             notFound()
             return
         }
-        def userLogged = new LoggedUser()
 
+        def userLogged = new LoggedUser()
         userLogged.setUsername(springSecurityService.principal.username)
 
         def userAuth = springSecurityService.principal.authorities
@@ -89,6 +89,12 @@ class ContactoController {
         }else{
             userLogged.setAdmin(false)
         }
+
+
+
+
+
+
 
         contacto.usuario = User.findById( (long) springSecurityService.principal.id)
 
@@ -102,6 +108,13 @@ class ContactoController {
         } catch (ValidationException e) {
             respond contacto.errors, view:'create', model: ['user': userLogged]
             return
+        }
+
+        def deps = params.list('departamento')
+        for(String d in deps){
+            def departa =  Departamento.findById(Long.parseLong(d))
+            departa.addToConts(contacto).save(flush: true)
+            contacto.addToDeps(departa).save(flush: true)
         }
 
         request.withFormat {

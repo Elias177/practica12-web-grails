@@ -51,11 +51,33 @@ class DepartamentoController {
     }
 
     def show(Long id) {
-        respond departamentoService.get(id)
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+        respond departamentoService.get(id), model: ['user': userLogged]
     }
 
     def create() {
-        respond new Departamento(params)
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+        respond new Departamento(params),model: ['user': userLogged]
     }
 
     def save(Departamento departamento) {
@@ -64,17 +86,36 @@ class DepartamentoController {
             return
         }
 
+
+        def userLogged = new LoggedUser()
+
+        userLogged.setUsername(springSecurityService.principal.username)
+
+        def userAuth = springSecurityService.principal.authorities
+        if(userAuth.toString() == "[ROLE_ADMIN]"){
+            userLogged.setAdmin(true)
+        }else{
+            userLogged.setAdmin(false)
+        }
+
+        departamento.usuario = User.findById( (long) springSecurityService.principal.id)
+
+        departamento.fecha = new Date()
+        departamento.status = message(code: "creada.label")+" - "+ new Date().toString()
+
+
+
         try {
             departamentoService.save(departamento)
         } catch (ValidationException e) {
-            respond departamento.errors, view:'create'
+            respond departamento.errors, view:'create', model: ['user': userLogged]
             return
         }
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'departamento.label', default: 'Departamento'), departamento.id])
-                redirect departamento
+                redirect action: 'index'
             }
             '*' { respond departamento, [status: CREATED] }
         }

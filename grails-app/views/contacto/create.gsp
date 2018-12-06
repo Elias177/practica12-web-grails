@@ -72,18 +72,20 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label"><g:link class="btn btn-success create" controller="categoria" action="create"><i class="icon-plus"></i></g:link>
+                            <label class="control-label">
                                 <g:message code="categoria.label" /> :</label>
                             <div class="controls">
                                 <g:select class="span11" name='categoria' value="${categoria?.id}"
                                           noSelection="${['null':'Select One...']}"
                                           from='${categoriaList}'
                                           optionKey="id" optionValue="nombre" required="required"></g:select>
+                                <g:link class="btn btn-success create" controller="categoria" action="create"><i class="icon-plus"></i></g:link>
                             </div>
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label"><g:link class="btn btn-success create" controller="departamento" action="create"><i class="icon-plus"></i></g:link><g:message code="descripcion.label" /> :
+                            <label class="control-label">
+                                <g:message code="departamento.label" />s :
                             </label>
                             <div class="controls">
                                 <table class="table table-striped with-check span11">
@@ -98,7 +100,7 @@
 
                                     <g:each in="${departamentoList}">
                                         <tr class="gradeX">
-                                            <td><g:checkBox name="departamento" value="${it.id}" /></td>
+                                            <td><g:checkBox name="departamento" value="${it.id}" checked="false" /></td>
                                             <td>${it.nombre}</td>
                                             <td>${it.descripcion}</td>
                                         </tr>
@@ -107,6 +109,7 @@
                                     </tbody>
 
                                 </table>
+                                <g:link class="btn btn-success create" controller="departamento" action="create"><i class="icon-plus"></i></g:link>
                             </div>
 
 
