@@ -17,6 +17,7 @@ class User implements Serializable {
     Date fecha
     String status
     static hasMany = [deps: Departamento]
+    static belongsTo = UserRole
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked

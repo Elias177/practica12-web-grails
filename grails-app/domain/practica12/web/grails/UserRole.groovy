@@ -83,5 +83,6 @@ class UserRole implements Serializable {
 	static mapping = {
 		id composite: ['user', 'role']
 		version false
+        user cascade: 'all-delete-orphan'
 	}
 }

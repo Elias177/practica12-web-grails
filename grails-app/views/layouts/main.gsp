@@ -41,9 +41,9 @@
         </form>
         <li class="dropdown" id="profile-messages"><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome ${userLog.username}</span><b class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="/?lang=es"><i class="icon-flag"></i>Spanish</a></li>
+                <li><a href="/?lang=es"><i class="icon-globe"></i>Español</a></li>
                 <li class="divider"></li>
-                <li><a href="/?lang=en"><i class="icon-flag"></i>English</a></li>
+                <li><a href="/?lang=en"><i class="icon-globe"></i>English</a></li>
                 <li class="divider"></li>
                 <li><a title="" HREF="javascript:document.submitForm.submit()"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
             </ul>

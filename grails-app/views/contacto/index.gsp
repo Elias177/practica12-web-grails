@@ -16,6 +16,7 @@
     <div id="content" class="container-fluid">
         <!--breadcrumbs-->
         <!--End-breadcrumbs-->
+<g:if test="${userLog.admin}">
 
     <div class="quick-actions_homepage">
         <ul class="quick-actions">
@@ -25,6 +26,7 @@
             </li>
         </ul>
     </div>
+</g:if>
 
     <div class="span11">
         <g:if test="${flash.message}">

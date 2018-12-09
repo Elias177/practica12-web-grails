@@ -231,17 +231,8 @@ class UserController {
             return
         }
 
+
         User u = User.findById(id)
-        List<UserRole> ur = userRoleService.list()
-
-        for(UserRole us in ur){
-            if(us.user == u){
-                userRoleService.delete(us.id)
-
-            }
-
-        }
-
 
         if(u.deps.size() != 0){
             for(Departamento d in departamentoService.list()){
@@ -254,7 +245,13 @@ class UserController {
 
         }
 
-        userService.delete(id)
+
+
+        userRoleService.delete(UserRole.findByUser(u))
+
+
+
+       userService.delete(id)
 
         request.withFormat {
             form multipartForm {
