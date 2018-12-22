@@ -215,7 +215,21 @@ class ContactoController {
             return
         }
 
+        def contacto = Contacto.findById(id)
+
+        if(contacto.deps.size() != 0){
+            for(Departamento d in departamentoService.list()){
+
+                def book = contacto.deps.find { it.id == d.id }
+
+                if(book != null)
+                    contacto.removeFromDeps(book)
+            }
+
+        }
+
         contactoService.delete(id)
+
 
         request.withFormat {
             form multipartForm {

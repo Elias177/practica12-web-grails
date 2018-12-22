@@ -147,7 +147,7 @@ class CategoriaController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'categoria.label', default: 'Categoria'), categoria.nombre])
-                redirect categoria
+                redirect action: "index"
             }
             '*'{ respond categoria, [status: OK] }
         }
